@@ -55,7 +55,7 @@ public class Level {
 		restartLevel();
 	}
 
-	public LevelData getLevelData(){
+	public LevelData getLevelData() {
 		return leveldata;
 	}
 
@@ -89,7 +89,8 @@ public class Level {
 				else if (values[x][y] == 7)
 					tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, tileset.getImage("Grass"), this);
 				else if (values[x][y] == 8)
-					enemiesList.add(new Enemy(xPosition*tileSize, yPosition*tileSize, this)); // TODO: objects vs tiles
+					enemiesList.add(new Enemy(xPosition * tileSize, yPosition * tileSize, this)); // TODO: objects vs
+																									// tiles
 				else if (values[x][y] == 9)
 					tiles[x][y] = new Flag(xPosition, yPosition, tileSize, tileset.getImage("Flag"), this);
 				else if (values[x][y] == 10) {
@@ -167,10 +168,11 @@ public class Level {
 
 			for (int i = 0; i < flowers.size(); i++) {
 				if (flowers.get(i).getHitbox().isIntersecting(player.getHitbox())) {
-					if(flowers.get(i).getType() == 1)
+					if (flowers.get(i).getType() == 1)
 						water(flowers.get(i).getCol(), flowers.get(i).getRow(), map, 3);
-//					else
-//						addGas(flowers.get(i).getCol(), flowers.get(i).getRow(), map, 20, new ArrayList<Gas>());
+					// else
+					// addGas(flowers.get(i).getCol(), flowers.get(i).getRow(), map, 20, new
+					// ArrayList<Gas>());
 					flowers.remove(i);
 					i--;
 				}
@@ -191,16 +193,44 @@ public class Level {
 			camera.update(tslf);
 		}
 	}
-	
-	
-	//#############################################################################################################
-	//Your code goes here! 
-	//Please make sure you read the rubric/directions carefully and implement the solution recursively!
+
+	// #############################################################################################################
+	// Your code goes here!
+	// Please make sure you read the rubric/directions carefully and implement the
+	// solution recursively!
+	/*
+	 * 0 = falling
+	 * 1 = quarter
+	 * 2 = half
+	 * 3 = full
+	 */
+
 	private void water(int col, int row, Map map, int fullness) {
-		
+		String water = "";
+		{
+			if (fullness == 0) {
+				water = "Falling_water";
+			} else if (fullness == 1) {
+				water = "Quarter_water";
+			} else if (fullness == 2) {
+				water = "Half_water";
+			} else if (fullness == 3) {
+				water = "Full_water";
+			}
+		}
+		Boolean up1 = row+1 < map.getTiles()[col].length;
+		Boolean down1 = row-1 > 0;
+		Boolean left1 = col-1 > 0;
+		Boolean right1 = col+1 < map.getTiles().length;
+		Water w = new Water(col, row, tileSize, tileset.getImage(water), this, fullness);
+		map.addTile(col, row, w);
+		{
+			if (down1 && !map.getTiles()[col][row-1].isSolid()){
+				
+			}
+			
+		}
 	}
-
-
 
 	public void draw(Graphics g) {
 		g.translate((int) -camera.getX(), (int) -camera.getY());
