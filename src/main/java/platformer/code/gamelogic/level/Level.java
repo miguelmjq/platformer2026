@@ -218,17 +218,38 @@ public class Level {
 				water = "Full_water";
 			}
 		}
-		Boolean up1 = row+1 < map.getTiles()[col].length;
-		Boolean down1 = row-1 > 0;
-		Boolean left1 = col-1 > 0;
-		Boolean right1 = col+1 < map.getTiles().length;
+		// boolean variables
+
+		Boolean down1 = row + 1 < map.getTiles()[col].length;
+		Boolean up1 = row - 1 >= 0;
+		Boolean left1 = col - 1 >= 0;
+		Boolean right1 = col + 1 < map.getTiles().length;
+		Boolean nothingLeft = left1 && !(map.getTiles()[col - 1][row] instanceof Water) && !(map.getTiles()[col - 1][row].isSolid());
+		Boolean nothingRight = right1 && !(map.getTiles()[col + 1][row] instanceof Water) && !(map.getTiles()[col - 1][row].isSolid());
+
 		Water w = new Water(col, row, tileSize, tileset.getImage(water), this, fullness);
 		map.addTile(col, row, w);
-		{
-			if (down1 && !map.getTiles()[col][row-1].isSolid()){
-				
+		if (down1 && !(map.getTiles()[col][row+1].isSolid())){
+			water(col, row+1, map, 0);
+		}
+		else if (fullness == 0 && map.getTiles()[col][row+1].isSolid()){
+			water(col, row, map, 3);
+		}
+		else if (fullness == 1) {
+			if (nothingLeft) {
+				water(col - 1, row, map, fullness);
 			}
-			
+			if (nothingRight) {
+				water(col + 1, row, map, fullness);
+			}
+		}
+		else if (fullness > 1) {
+			if (nothingLeft) {
+				water(col - 1, row, map, fullness - 1);
+			}
+			if (nothingRight) {
+				water(col + 1, row, map, fullness - 1);
+			}
 		}
 	}
 
