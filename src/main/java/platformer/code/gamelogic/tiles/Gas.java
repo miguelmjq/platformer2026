@@ -8,7 +8,7 @@ import platformer.code.gamelogic.level.Level;
 public class Gas extends Tile {
 	private int intensity;
 
-	public Gas(float x, float y, int size, BufferedImage image, Level level, int intensity) {
+	public Gas(float x, float y,  int size, BufferedImage image, Level level, int intensity) {
 		super(x, y, size, image, false, level);
 		this.intensity = intensity;
 		this.hitbox = new RectHitbox(x * size, y * size, 0, 10, size, size);
