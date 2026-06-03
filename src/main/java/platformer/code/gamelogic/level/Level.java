@@ -119,8 +119,8 @@ public class Level {
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Half_water"), this, 2);
 				else if (values[x][y] == 21)
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Quarter_water"), this, 1);
-				else if (values[x][y]==22)
-					tiles[x][y] =  new Tile(xPosition, yPosition, tileSize, tileset.getImage("Kirby"), true, this);
+				else if (values[x][y] == 22)
+					tiles[x][y] = new Tile(xPosition, yPosition, tileSize, tileset.getImage("Kirby"), true, this);
 			}
 
 		}
@@ -263,11 +263,15 @@ public class Level {
 
 	private void addGas(int col, int row, Map map, int numSquaresToFill, ArrayList<Gas> placedThisRound) {
 		int count = 0;
-		Gas g = new Gas (0, 0, tileSize, tileset.getImage("GasOne"), this, 0);
+		Gas g = new Gas(0, 0, tileSize, tileset.getImage("GasOne"), this, 0);
 		map.addTile(col, row, g);
-		//while (count<=numSquaresToFill) {
-		//	
-		//}
+		while (count <= numSquaresToFill) {
+			if (!(row + 1 > map.getTiles()[col].length) && !map.getTiles()[col][row + 1].isSolid()) {
+				map.addTile(col, row+1, g);
+				count++;
+				
+			}
+		}
 	}
 
 	public void draw(Graphics g) {
