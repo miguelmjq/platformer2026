@@ -167,6 +167,18 @@ public class Level {
 				onPlayerDeath();
 			if (player.getCollisionMatrix()[PhysicsObject.RIG] instanceof Spikes)
 				onPlayerDeath();
+			if(player.getCollisionMatrix()[PhysicsObject.BOT] instanceof Gas){
+				System.out.println("gas touched");
+			}
+			if(player.getCollisionMatrix()[PhysicsObject.TOP] instanceof Gas){
+				System.out.println("gas touched");
+			}
+			if(player.getCollisionMatrix()[PhysicsObject.LEF] instanceof Gas){
+				System.out.println("gas touched");
+			}
+			if(player.getCollisionMatrix()[PhysicsObject.RIG] instanceof Gas){
+				System.out.println("gas touched");
+			}
 
 			for (int i = 0; i < flowers.size(); i++) {
 				if (flowers.get(i).getHitbox().isIntersecting(player.getHitbox())) {
