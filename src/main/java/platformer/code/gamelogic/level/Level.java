@@ -44,7 +44,7 @@ public class Level {
 	private int height;
 	private int tileSize;
 	private Tileset tileset;
-	public static float GRAVITY = 70;
+	public static float GRAVITY = 55;
 
 	public Level(LevelData leveldata) {
 		this.leveldata = leveldata;
@@ -200,10 +200,7 @@ public class Level {
 	// Please make sure you read the rubric/directions carefully and implement the
 	// solution recursively!
 	/*
-	 * 0 = falling
-	 * 1 = quarter
-	 * 2 = half
-	 * 3 = full
+	 * 0 = falling 1 = quarter 2 = half 3 = full
 	 */
 
 	private void water(int col, int row, Map map, int fullness) {
@@ -263,14 +260,87 @@ public class Level {
 
 	private void addGas(int col, int row, Map map, int numSquaresToFill, ArrayList<Gas> placedThisRound) {
 		int count = 0;
-		Gas g = new Gas(0, 0, tileSize, tileset.getImage("GasOne"), this, 0);
-		map.addTile(col, row, g);
-		while (count <= numSquaresToFill) {
-			if (!(row + 1 > map.getTiles()[col].length) && !map.getTiles()[col][row + 1].isSolid()) {
-				map.addTile(col, row+1, g);
+		Gas start = new Gas(col, row, tileSize, tileset.getImage("GasOne"), this, 0);
+		map.addTile(col, row, start);
+		placedThisRound.add(start);
+		int i = 0;
+		while(i<placedThisRound.size()&& count<numSquaresToFill) {
+			Gas cur = placedThisRound.get(i);
+			int c = cur.getCol();
+			int r = cur.getRow();
+			//up 
+			if(count < numSquaresToFill && r-1>=0
+				&& !map.getTiles()[c][r-1].isSolid()	
+				&& !(map.getTiles()[c][r-1] instanceof Gas)) {
+				Gas newG = new Gas(c, r-1, tileSize, tileset.getImage("GasOne"), this, 0);
+				map.addTile(c, r-1, newG);
+				placedThisRound.add(newG);
 				count++;
-				
 			}
+			//upright
+			if(count < numSquaresToFill && r-1>=0 && c + 1 < map.getTiles().length
+					&& !map.getTiles()[c+1][r-1].isSolid()	
+					&& !(map.getTiles()[c+1][r-1] instanceof Gas)) {
+					Gas newG = new Gas(c+1, r-1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c+1, r-1, newG);
+					placedThisRound.add(newG);
+					count++;
+				}
+			//upleft
+			if(count < numSquaresToFill && r-1>=0 && c - 1 >=0
+					&& !map.getTiles()[c-1][r-1].isSolid()	
+					&& !(map.getTiles()[c-1][r-1] instanceof Gas)) {
+					Gas newG = new Gas(c-1, r-1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c-1, r-1, newG);
+					placedThisRound.add(newG);
+					count++;
+				}
+			//right
+			if(count < numSquaresToFill && c+1 < map.getTiles().length
+					&& !map.getTiles()[c+1][r].isSolid()	
+					&& !(map.getTiles()[c+1][r] instanceof Gas)) {
+					Gas newG = new Gas(c+1, r, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c+1, r, newG);
+					placedThisRound.add(newG);
+					count++;
+				}
+			//left
+			if(count < numSquaresToFill && c-1 >= 0
+					&& !map.getTiles()[c-1][r].isSolid()	
+					&& !(map.getTiles()[c-1][r] instanceof Gas)) {
+					Gas newG = new Gas(c-1, r, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c-1, r, newG);
+					placedThisRound.add(newG);
+					count++;
+				}
+			//down
+			if(count < numSquaresToFill && r+1 < map.getTiles()[c].length
+					&& !map.getTiles()[c][r+1].isSolid()	
+					&& !(map.getTiles()[c][r+1] instanceof Gas)) {
+					Gas newG = new Gas(c, r+1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c, r+1, newG);
+					placedThisRound.add(newG);
+					count++;
+				}
+			//downright
+			if(count < numSquaresToFill && r+1 < map.getTiles()[c].length && c+1 < map.getTiles().length
+					&& !map.getTiles()[c+1][r+1].isSolid()	
+					&& !(map.getTiles()[c+1][r+1] instanceof Gas)) {
+					Gas newG = new Gas(c+1, r+1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c+1, r+1, newG);
+					placedThisRound.add(newG);
+					count++;
+				}
+			//downleft
+			if(count < numSquaresToFill && r+1 < map.getTiles()[c].length && c -1 >= 0
+					&& !map.getTiles()[c-1][r+1].isSolid()	
+					&& !(map.getTiles()[c-1][r+1] instanceof Gas)) {
+					Gas newG = new Gas(c-1, r+1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c-1, r+1, newG);
+					placedThisRound.add(newG);
+					count++;
+				}
+			i++;
 		}
 	}
 
